@@ -1,0 +1,225 @@
+.signUp_container {
+    height: fit-content;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 50px 0;
+}
+
+.signup_info {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid rgb(40, 41, 62);
+    height: fit-content;
+}
+
+.form_step_first {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 30px;
+    padding: 50px;
+    border-radius: 8px;
+    margin-top: 30px;
+    max-height: 460px;
+    transition: .2s;
+    background-color: whitesmoke;
+}
+
+.step_one_first_row {
+    display: flex;
+    column-gap: 20px;
+}
+
+.password_field {
+    width: 100%;
+    position: relative;
+}
+
+.validate_label {
+    color: indianred;
+    padding-left: 14px;
+    margin-top: -40px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.step_terms {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: scroll;
+    color: #00052D;
+}
+
+.step_terms p {
+    margin-bottom: 15px;
+    text-align: justify;
+    font-size: 14px;
+    padding-right: 15px;
+}
+
+.step_terms ol li {
+    display: list-item;
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+
+.terms_logo {
+    display: flex;
+    font-size: 2rem;
+    color: #00052D;
+    margin-top: 30px;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.step_terms::-webkit-scrollbar {
+    width: 6px;
+}
+
+.step_terms::-webkit-scrollbar-track {
+    background: lightgray;
+}
+
+.step_terms::-webkit-scrollbar-thumb {
+    background-color: #00052D;
+    border-radius: 20px;
+}
+
+
+
+/*****responsive styles*****/
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .signUp_container {
+        margin: 20px 0;
+    }
+
+    .signup_info {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .form_step_first {
+        display: flex;
+        row-gap: 15px;
+        padding: 20px 10px;
+        margin-top: 15px;
+    }
+
+    .step_one_first_row {
+        flex-direction: column;
+        row-gap: 15px;
+    }
+
+    .terms_logo {
+        display: flex;
+        font-size: 1.5rem;
+        margin-top: 30px;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+}
+
+@media only screen and (min-width: 601px)and (max-width: 768px) {
+    .signUp_container {
+        margin: 20px 0;
+    }
+
+    .signup_info {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .form_step_first {
+        display: flex;
+        row-gap: 15px;
+        padding: 20px 10px;
+        margin-top: 15px;
+    }
+
+    .step_one_first_row {
+        flex-direction: column;
+        row-gap: 15px;
+    }
+
+    .terms_logo {
+        display: flex;
+        font-size: 1.5rem;
+        margin-top: 30px;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 769px)and (max-width: 992px) {
+    .signUp_container {
+        margin: 20px 0;
+    }
+
+    .signup_info {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .form_step_first {
+        display: flex;
+        row-gap: 15px;
+        padding: 20px 10px;
+        margin-top: 15px;
+        max-height: 300px;
+    }
+
+    .step_one_first_row {
+        row-gap: 15px;
+    }
+
+    .terms_logo {
+        display: flex;
+        font-size: 1.5rem;
+        margin-top: 30px;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 993px) and (max-width: 1200px) {
+    .signUp_container {
+        margin: 20px 0;
+    }
+
+    .signup_info {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .form_step_first {
+        display: flex;
+        row-gap: 15px;
+        padding: 20px 10px;
+        margin-top: 15px;
+        max-height: 300px;
+    }
+
+    .step_one_first_row {
+        row-gap: 15px;
+    }
+
+    .terms_logo {
+        display: flex;
+        font-size: 1.5rem;
+        margin-top: 30px;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+}
