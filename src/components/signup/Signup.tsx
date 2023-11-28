@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
-import '../../styles/SignUp.module.css'
+// import '../../styles/SignUp.module.css'
 import { SiIcon } from 'react-icons/si';
-import { Box, Button, Checkbox, FormControlLabel, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Step, StepLabel, Stepper, Typography, Card, CardContent } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { CountryType, SignUpInputTypes } from '../../models';
 import NativeTextInput from '../ui/NativeTextInput';
-import EmailInput from '../ui/EmailInput';
-import ConfirmEmailInput from '../ui/ConfirmEmailInput';
-import PasswordInput from '../ui/PasswordInput';
 import CountrySelect from '../ui/CountrySelect';
+import OrderSummary from '../ui/OrderSummary';
+import SSNInput from '../ui/SSNInput';
+import DateInput from '../ui/DateInput';
 
 
-const steps = ['General', 'Address', 'Terms and Conditions'];
+const steps = ['General', 'Personal Info', 'Terms and Conditions'];
 
 export default function SignUp() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [formPage, setFormPage] = useState<string>('general');
-    const [passShow, setPassShow] = useState<boolean>(false);
     const [termCheckValue, setTermCheckValue] = useState<boolean>(false);
-    const [emailError, setEmailError] = useState<string>('');
 
     const {
+        control,
         register,
         handleSubmit,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         formState: { errors },
     } = useForm<SignUpInputTypes>();
 
@@ -42,11 +42,11 @@ export default function SignUp() {
     }, [activeStep])
 
     const handleNext = (data: any) => {
-        if (data.email !== data.confirmEmail) {
-            return setEmailError("Email didn't match")
-        }
+        console.log(data)
+        // if (data.email !== data.confirmEmail) {
+        //     return setEmailError("Email didn't match")
+        // }
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setEmailError('')
     };
 
     const handleBack = () => {
@@ -54,231 +54,230 @@ export default function SignUp() {
     };
 
     return (
-        <Box className='signup_info'>
-            <Stepper
+        <Box component={'div'}
+            sx={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                px: 10,
+                py: 2,
+                gap: 5
+            }}>
+            <Card
                 sx={{
-                    width: { xs: '90%', sm: '80%' }, mx: 'auto',
-                    '& .MuiStepConnector-root span': {
-                        borderColor: '#00052D',
-                    },
-                    '& .MuiStepIcon-root': {
-                        fontSize: { xs: 14, sm: 14, md: 18, lg: 30 },
-                    },
-                    mb: 5
-                }}
-                activeStep={activeStep}>
-                {steps.map((label) => {
-                    const stepProps: { completed?: boolean } = {};
-                    const labelProps: {
-                        optional?: React.ReactNode;
-                    } = {};
-                    return (
-                        <Step
-                            sx={{
-                                '& .MuiStepLabel-root .Mui-active': {
-                                    color: '#00052D', // circle color (ACTIVE)
-                                },
-                                '& .MuiStepLabel-iconContainer .Mui-completed': {
-                                    color: '#00052D', // circle color (ACTIVE)
-                                },
+                    width: '70%',
+                    borderRadius: 2
+                }}>
+                <CardContent>
+                    <Stepper
+                        sx={{
+                            width: '90%', mx: 'auto',
+                            '& .MuiStepConnector-root span': {
+                                borderColor: '#00052D',
+                            },
+                            '& .MuiStepIcon-root': {
+                                fontSize: { xs: 14, sm: 14, md: 18, lg: 24 },
+                            },
+                            my: 5
+                        }}
+                        activeStep={activeStep}>
+                        {steps.map((label) => {
+                            const stepProps: { completed?: boolean } = {};
+                            const labelProps: {
+                                optional?: React.ReactNode;
+                            } = {};
+                            return (
+                                <Step
+                                    sx={{
+                                        '& .MuiStepLabel-root .Mui-active': {
+                                            color: '#00052D', // circle color (ACTIVE)
+                                        },
+                                        '& .MuiStepLabel-iconContainer .Mui-completed': {
+                                            color: '#00052D', // circle color (ACTIVE)
+                                        },
 
-                            }}
-                            key={label} {...stepProps}>
-                            <StepLabel
-                                sx={{
-                                    '& .MuiStepLabel-labelContainer span': {
-                                        color: '#00052D',
-                                        fontSize: { xs: '10px', sm: '12px', md: '16px', lg: '16px', xl: '16px' }
-                                    },
-                                    '& .MuiStepLabel-labelContainer .Mui-active': {
-                                        color: '#00052D',
-                                    },
-                                }}
-                                {...labelProps}>
-                                {label}
-                            </StepLabel>
-                        </Step>
-                    );
-                })}
-            </Stepper>
-            <Box component={'form'}
-                noValidate
-                onSubmit={handleSubmit(onSubmit)}>
-                {formPage === 'general' &&
-                    <Box component={'div'} className='form_step_first'>
-                        <Box component={'div'} className='step_one_first_row'>
-                            <NativeTextInput
-                                size='small'
-                                type={'text'}
-                                register={register}
-                                errors={errors}
-                                label={'First name'}
-                                fieldID={'firstName'}
-                                placeholder={'First name'}
-                            />
-                            <NativeTextInput
-                                size='small'
-                                type={'text'}
-                                register={register}
-                                errors={errors}
-                                label={'Last name'}
-                                fieldID={'lastName'}
-                                placeholder={'Last name'}
-                            />
-                        </Box>
-                        <Box component={'div'} className='step_one_first_row'>
-                            <EmailInput
-                                errors={errors}
-                                register={register}
-                                label={'Email'}
-                                fieldID={'email'}
-                            />
-                            <ConfirmEmailInput
-                                errors={errors}
-                                register={register}
-                                label={'Confirm email'}
-                                emailError={emailError}
-                            />
-                        </Box>
-                        <Box component={'div'} className='step_one_first_row'>
-                            <NativeTextInput
-                                size='small'
-                                type={'text'}
-                                register={register}
-                                errors={errors}
-                                label={'Phone'}
-                                fieldID={'phone'}
-                                placeholder={'Phone'}
-                            />
-                            <Box component={'div'} className='password_field'>
-                                <PasswordInput
-                                    passShow={passShow}
-                                    register={register}
-                                    errors={errors}
-                                    setPassShow={setPassShow}
-                                />
-                            </Box>
-                        </Box>
-                    </Box>}
-                {formPage === 'address' && <Box component={'div'} className='form_step_first'>
-                    <Box component={'div'} className='step_one_first_row'>
-                        <NativeTextInput
-                            size='small'
-                            type={'text'}
-                            register={register}
-                            errors={errors}
-                            label={'Address'}
-                            fieldID={'address'}
-                            placeholder={'Address'}
-                        />
-                        <NativeTextInput
-                            size='small'
-                            type={'text'}
-                            register={register}
-                            errors={errors}
-                            label={'Apartment'}
-                            fieldID={'apartment'}
-                            placeholder={'apartment'}
-                        />
-                    </Box>
-                    <Box component={'div'} className='step_one_first_row'>
-                        <NativeTextInput
-                            size='small'
-                            type={'text'}
-                            register={register}
-                            errors={errors}
-                            label={'City'}
-                            fieldID={'city'}
-                            placeholder={'city'}
-                        />
-                        <NativeTextInput
-                            size='small'
-                            type={'text'}
-                            register={register}
-                            errors={errors}
-                            label={'Post code'}
-                            fieldID={'postCode'}
-                            placeholder={'postCode'}
-                        />
-                    </Box>
-                    <CountrySelect register={register} countries={countries} errors={errors} />
-                </Box>}
-                {formPage === 'terms' &&
-                    <Box component={'div'} className='form_step_first'>
-                        <Box component={'div'} className='step_terms'>
-                            <p>1. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
-                            <p>2. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
-                            <p>3. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
-                            <ol type='1'>
-                                <li>Lorem ipsum dolor sit amet.</li>
-                                <li>Lorem ipsum dolor sit amet.</li>
-                                <li>Lorem ipsum dolor sit amet.</li>
-                                <li>Lorem ipsum dolor sit amet.</li>
-                                <li>Lorem ipsum dolor sit amet.</li>
-                            </ol>
-                            <span className='terms_logo'><SiIcon color='#ED7D31' size={50} />Affburg</span>
-                            <FormControlLabel required
-                                control={
-                                    <Checkbox
-                                        {...register('checkTerm')}
-                                        // value={checkValue}
-                                        onChange={(e) => setTermCheckValue(e.target.checked)}
+                                    }}
+                                    key={label} {...stepProps}>
+                                    <StepLabel
                                         sx={{
-                                            color: '#00052D',
-                                            '&.Mui-checked': {
+                                            '& .MuiStepLabel-labelContainer span': {
+                                                color: '#00052D',
+                                                fontSize: { xs: '10px', sm: '12px', md: '16px', lg: '16px', xl: '16px' }
+                                            },
+                                            '& .MuiStepLabel-labelContainer .Mui-active': {
                                                 color: '#00052D',
                                             },
                                         }}
-                                    />}
-                                label="Accept terms and conditions" />
+                                        {...labelProps}>
+                                        {label}
+                                    </StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                    <Box component={'form'}
+                        sx={{
+                            width: '90%',
+                            mx: 'auto'
+                        }}
+                        noValidate
+                        onSubmit={handleSubmit(onSubmit)}>
+                        {formPage === 'general' &&
+                            <Box component={'div'}
+                                sx={{
+                                    display: 'flex',
+                                    gap: 5,
+                                }}>
+                                <SSNInput
+                                    size='large'
+                                    type={'text'}
+                                    register={register}
+                                    errors={errors}
+                                    label={'SSN'}
+                                    fieldID={'SSN'}
+                                    placeholder={'SSN number'}
+                                />
+                                <DateInput
+                                    control={control}
+                                    errors={errors}
+                                    label='Date of Birth'
+                                    fieldID='DoB' />
+                            </Box>
+                        }
+                        {formPage === 'PersonalInfo' && <Box component={'div'}>
+                            <Box component={'div'}>
+                                <NativeTextInput
+                                    size='small'
+                                    type={'text'}
+                                    register={register}
+                                    errors={errors}
+                                    label={'Address'}
+                                    fieldID={'address'}
+                                    placeholder={'Address'}
+                                />
+                                <NativeTextInput
+                                    size='small'
+                                    type={'text'}
+                                    register={register}
+                                    errors={errors}
+                                    label={'Apartment'}
+                                    fieldID={'apartment'}
+                                    placeholder={'apartment'}
+                                />
+                            </Box>
+                            <Box component={'div'} className='step_one_first_row'>
+                                <NativeTextInput
+                                    size='small'
+                                    type={'text'}
+                                    register={register}
+                                    errors={errors}
+                                    label={'City'}
+                                    fieldID={'city'}
+                                    placeholder={'city'}
+                                />
+                                <NativeTextInput
+                                    size='small'
+                                    type={'text'}
+                                    register={register}
+                                    errors={errors}
+                                    label={'Post code'}
+                                    fieldID={'postCode'}
+                                    placeholder={'postCode'}
+                                />
+                            </Box>
+                            <CountrySelect register={register} countries={countries} errors={errors} />
+                        </Box>}
+                        {formPage === 'terms' &&
+                            <Box component={'div'} className='form_step_first'>
+                                <Box component={'div'} className='step_terms'>
+                                    <p>1. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
+                                    <p>2. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
+                                    <p>3. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
+                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos molestias dolor nostrum ipsam animi iste laboriosam eaque recusandae distinctio, harum eius, delectus tempora fugiat itaque, corporis reprehenderit temporibus sequi sed!</p>
+                                    <ol type='1'>
+                                        <li>Lorem ipsum dolor sit amet.</li>
+                                        <li>Lorem ipsum dolor sit amet.</li>
+                                        <li>Lorem ipsum dolor sit amet.</li>
+                                        <li>Lorem ipsum dolor sit amet.</li>
+                                        <li>Lorem ipsum dolor sit amet.</li>
+                                    </ol>
+                                    <span className='terms_logo'><SiIcon color='#ED7D31' size={50} />Affburg</span>
+                                    <FormControlLabel required
+                                        control={
+                                            <Checkbox
+                                                {...register('checkTerm')}
+                                                // value={checkValue}
+                                                onChange={(e) => setTermCheckValue(e.target.checked)}
+                                                sx={{
+                                                    color: '#00052D',
+                                                    '&.Mui-checked': {
+                                                        color: '#00052D',
+                                                    },
+                                                }}
+                                            />}
+                                        label="Accept terms and conditions" />
+                                </Box>
+                            </Box>}
+                        <Box sx={{
+                            width: { xs: '100%', sm: '80%', md: '80%', lg: '80%', xl: '100%' }, display: 'flex', flexDirection: 'row', mx: 'auto', mt: 4
+                        }}>
+                            <Button
+                                disabled={activeStep === 0}
+                                onClick={handleBack}
+                                variant='contained'
+                                sx={{
+                                    bgcolor: '#1c2437',
+                                    color: 'whiteSmoke',
+                                    whiteSpace: 'nowrap',
+                                    textTransform: 'capitalize',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        bgcolor: '#1c2437',
+                                        boxShadow: 'none',
+                                    }
+                                }}>
+                                Back
+                            </Button>
+                            <Box sx={{ flex: '1 1 auto' }} />
+                            {activeStep < 2 && <Button
+                                onClick={handleSubmit(handleNext)}
+                                variant='contained'
+                                sx={{
+                                    bgcolor: '#1c2437',
+                                    color: 'whiteSmoke',
+                                    whiteSpace: 'nowrap',
+                                    textTransform: 'capitalize',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        bgcolor: '#1c2437',
+                                        boxShadow: 'none',
+                                    }
+                                }}>
+                                Next
+                            </Button>}
+                            {activeStep === 2 &&
+                                <Button
+                                    style={{ backgroundColor: `${termCheckValue ? '#1c2437' : 'lightGray'}` }}
+                                    disabled={!termCheckValue}
+                                    type='submit'
+                                    sx={{
+                                        bgcolor: `${termCheckValue ? '#1c2437' : 'lightGray'}`,
+                                        color: 'whiteSmoke',
+                                        whiteSpace: 'nowrap',
+                                        textTransform: 'capitalize',
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                            bgcolor: '#1c2437',
+                                            boxShadow: 'none',
+                                        }
+                                    }}>
+                                    Sign up
+                                </Button>
+                            }
                         </Box>
-                    </Box>}
-
-                <Box sx={{
-                    width: { xs: '100%', sm: '80%', md: '80%', lg: '80%', xl: '100%' }, display: 'flex', flexDirection: 'row', pt: 2, mx: 'auto'
-                }}>
-                    <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        style={{ backgroundColor: `${activeStep > 0 ? '#1c2437' : 'lightGray'}` }}
-                        sx={{
-                            color: 'whiteSmoke',
-                            whiteSpace: 'nowrap',
-                            height: 28,
-                            fontSize: '.6rem'
-                        }}>
-                        Back
-                    </Button>
-                    <Box sx={{ flex: '1 1 auto' }} />
-                    {activeStep < 2 && <Button
-                        onClick={handleSubmit(handleNext)}
-                        variant='contained'
-                        style={{ backgroundColor: '#1c2437' }}
-                        sx={{
-                            color: 'whiteSmoke',
-                            whiteSpace: 'nowrap',
-                            height: 28,
-                            fontSize: '.6rem'
-                        }}>
-                        Next
-                    </Button>}
-                    {activeStep === 2 &&
-                        <Button
-                            style={{ backgroundColor: `${termCheckValue ? '#1c2437' : 'lightGray'}` }}
-                            disabled={!termCheckValue}
-                            type='submit'
-                            sx={{
-                                color: 'whiteSmoke',
-                                whiteSpace: 'nowrap',
-                                height: 28,
-                                fontSize: '.6rem'
-                            }}>
-                            Sign up
-                        </Button>
-                    }
-                </Box>
-            </Box>
+                    </Box>
+                </CardContent>
+            </Card>
+            <OrderSummary />
         </Box>
     )
 }

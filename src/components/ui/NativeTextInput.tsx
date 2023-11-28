@@ -52,7 +52,10 @@ export default function NativeTextInput({ type, errors, register, label, fieldID
                         paddingLeft: '14px',
                         marginTop: '2px',
                         fontSize: '12px',
-                        fontWeight: 600,
+                        fontWeight: 500,
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'flex-start'
                     }}>
                     {errors[fieldID]?.type === 'required' && <Box component={'span'}>{errors[fieldID].message}</Box>}
                 </Box>

@@ -6,15 +6,15 @@ export type CountryType = {
 }
 
 export type SignUpInputTypes = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    confirmEmail: string;
-    phone: string;
-    password: string;
-    address: string;
-    apartment: string;
-    city: string;
-    country: string;
-    checkTerm: string;
+    SSN: string;
+    DoB: string;
+    // email: string;
+    // confirmEmail: string;
+    // phone: string;
+    // password: string;
+    // address: string;
+    // apartment: string;
+    // city: string;
+    // country: string;
+    // checkTerm: string;
 }
