@@ -60,7 +60,6 @@ export default function DateInput({ errors, fieldID, control, label }: DateProps
                         justifyContent: 'flex-start'
                     }}>
                     {errors[fieldID]?.type === 'required' && <Box component={'span'}>{errors[fieldID].message}</Box>}
-                    {console.log()}
                 </Box>
             </LocalizationProvider>
         </Box>
