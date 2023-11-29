@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Checkbox, FormControlLabel, Step, StepLabel, Stepper, Typography, Card, CardContent } from '@mui/material';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { SignUpInputTypes } from '../../models';
-import NativeTextInput from '../ui/NativeTextInput'; import OrderSummary from '../ui/OrderSummary';
+import NativeTextInput from '../ui/NativeTextInput'; import OrderSummary from '../OrderSummary';
 import DateInput from '../ui/DateInput';
+import SSNInput from '../ui/SSNInput';
 
 
 const steps = ['Identity', 'Personal Info', 'Billing'];
@@ -14,13 +14,14 @@ export default function SignUp() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [formPage, setFormPage] = useState<string>('identity');
     const [currAddress, setCurrAddress] = useState<boolean>(false);
+    const [passShow, setPassShow] = useState<boolean>(false);
+
 
 
     const {
         control,
         register,
         handleSubmit,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         formState: { errors },
     } = useForm<SignUpInputTypes>();
 
@@ -129,13 +130,15 @@ export default function SignUp() {
                                         mt: { xs: 2, md: 5 },
                                         mb: 2,
                                     }}>
-                                    <NativeTextInput
+                                    <SSNInput
+                                        setPassShow={setPassShow}
+                                        passShow={passShow}
                                         control={control}
                                         name='SSN'
-                                        label='SSN Number'
-                                        type='text'
-                                        rules={{ required: 'This field is required', pattern: { value: /^-?[0-9]*$/, message: 'Characters must be number 0-9' } }}
-                                        errors={errors.SSN} />
+                                        label='SSN code'
+                                        rules={{ required: 'This field is required', minLength: { value: 9, message: 'Minimum length is 9 characters' }, }}
+                                        errors={errors.SSN}
+                                    />
                                     <DateInput
                                         control={control}
                                         name='dateofBirth'
@@ -167,8 +170,8 @@ export default function SignUp() {
                                         display: 'flex',
                                         flexDirection: { xs: 'column', md: 'row' },
                                         gap: { xs: 2, md: 5 },
-                                        mt: { xs: 2, md: 5 },
-                                        mb: 2,
+                                        mt: 2,
+                                        mb: 4,
                                     }}>
                                     <NativeTextInput
                                         control={control}
@@ -193,7 +196,7 @@ export default function SignUp() {
                                         display: 'flex',
                                         flexDirection: { xs: 'column', md: 'row' },
                                         gap: { xs: 2, md: 5 },
-                                        mt: { xs: 2, md: 5 },
+                                        mt: 2,
                                         mb: 2,
                                     }}>
                                     <NativeTextInput

@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Typography, Card, CardContent, Button } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { GiFireZone } from "react-icons/gi";
-import NativeTextInput from '../ui/NativeTextInput';
 import { useNavigate } from "react-router-dom";
-
-
+import PhoneInput from '../ui/PhoneInput';
 
 
 type SignInInputTypes = {
@@ -19,6 +18,16 @@ export default function SignIn() {
         formState: { errors },
     } = useForm<SignInInputTypes>();
 
+    //for only number input
+    const formatPhoneNumber = (value: string) => {
+        // Remove non-digit characters from the input value
+        const cleanedValue = value.replace(/\D/g, '');
+        // Format the phone number with dashes
+        const formattedValue = cleanedValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        return formattedValue;
+    };
+
+    //for handle submit signin data
     const onSubmit: SubmitHandler<SignInInputTypes> = (data) => {
         console.log(data);
         if (data.phoneNumber) {
@@ -60,13 +69,14 @@ export default function SignIn() {
                             alignItems: 'center'
                         }}>
                         <Box component={'div'} sx={{ width: '100%' }}>
-                            <NativeTextInput
+                            <PhoneInput
                                 control={control}
                                 name='phoneNumber'
                                 label='Phone Number'
                                 type='text'
-                                rules={{ required: 'This field is required', pattern: { value: /^-?[0-9]*$/, message: 'Characters must be number 0-9' }, minLength: { value: 10, message: 'Minimum length is 10 characters' }, }}
+                                rules={{ required: 'This field is required', minLength: { value: 10, message: 'Minimum length is 10 characters' }, }}
                                 errors={errors.phoneNumber}
+                                formatPhoneNumber={formatPhoneNumber}
                             />
                         </Box>
                         <Button
