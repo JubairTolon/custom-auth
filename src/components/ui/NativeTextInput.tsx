@@ -1,65 +1,61 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TextField, Box } from '@mui/material';
+import { TextField } from '@mui/material';
+import { Controller } from 'react-hook-form';
+
+
 type TextPropsType = {
-    type: string;
-    register: any
     errors: any;
     label: string;
-    fieldID: string;
-    placeholder: string;
-    size: string;
+    name: string;
+    control: any;
+    type: string;
+    rules: any;
 }
-export default function NativeTextInput({ type, errors, register, label, fieldID, placeholder, size }: TextPropsType) {
+
+
+export default function NativeTextInput({ errors, control, name, label, type, rules }: TextPropsType) {
     return (
         <>
-            <Box component={"div"} sx={{ width: '100%' }}>
-                <TextField
-                    required
-                    variant='outlined'
-                    fullWidth
-                    autoComplete="off"
-                    size={size}
-                    type={type}
-                    label={label}
-                    id={fieldID}
-                    placeholder={placeholder}
-                    {...register(fieldID,
-                        {
-                            required: {
-                                value: true,
-                                message: `${label} is required`,
-                            }
-                        })}
-                    sx={{
-                        '& .MuiFormLabel-root': {
-                            fontWeight: 500,
-                        },
-                        '& label.Mui-focused': {
-                            color: '#1c2437',
-                            fontSize: size === 'small' ? 16 : 18
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            backgroundColor: '#ebebeb',
-                            '&.Mui-focused fieldset': {
-                                borderColor: '#2a3064',
-                                borderWidth: '2px'
+            <Controller
+                name={name}
+                control={control}
+                rules={rules}
+                render={({ field }) => (
+                    <TextField
+                        {...field}
+                        required
+                        sx={{
+                            '& .MuiFormLabel-root': {
+                                fontWeight: 500,
                             },
-                        },
-                    }} />
-                <Box component={'label'}
-                    sx={{
-                        color: 'indianred',
-                        paddingLeft: '14px',
-                        marginTop: '2px',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'flex-start'
-                    }}>
-                    {errors[fieldID]?.type === 'required' && <Box component={'span'}>{errors[fieldID].message}</Box>}
-                </Box>
-            </Box>
+                            '& label.Mui-focused': {
+                                color: '#3d30a2',
+                                // fontSize: size === 'small' ? 16 : 18
+                            },
+                            '& .MuiOutlinedInput-root': {
+                                backgroundColor: '#f8f8f8',
+                                '& fieldset': {
+                                    transition: '.3s',
+                                    borderWidth: "2px",
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: 'gray',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#3D30A2',
+                                    borderWidth: '2px'
+                                },
+                            },
+                        }}
+                        label={label}
+                        type={type}
+                        variant="outlined"
+                        fullWidth
+                        error={!!errors}
+                        helperText={errors ? errors.message : ''}
+                    />
+                )}
+            />
         </>
     )
 }

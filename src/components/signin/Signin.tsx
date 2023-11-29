@@ -8,20 +8,20 @@ import { useNavigate } from "react-router-dom";
 
 
 type SignInInputTypes = {
-    phone: string;
+    phoneNumber: string;
 }
 export default function SignIn() {
     const navigate = useNavigate();
 
     const {
-        register,
+        control,
         handleSubmit,
         formState: { errors },
     } = useForm<SignInInputTypes>();
 
     const onSubmit: SubmitHandler<SignInInputTypes> = (data) => {
         console.log(data);
-        if (data.phone) {
+        if (data.phoneNumber) {
             navigate('/signup')
         }
     };
@@ -61,13 +61,12 @@ export default function SignIn() {
                         }}>
                         <Box component={'div'} sx={{ width: '100%' }}>
                             <NativeTextInput
-                                type={'text'}
-                                register={register}
-                                errors={errors}
-                                label={'Phone Number'}
-                                fieldID={'phone'}
-                                placeholder={'your phone'}
-                                size='large'
+                                control={control}
+                                name='phoneNumber'
+                                label='Phone Number'
+                                type='text'
+                                rules={{ required: 'This field is required', pattern: { value: /^-?[0-9]*$/, message: 'Characters must be number 0-9' }, minLength: { value: 10, message: 'Minimum length is 10 characters' }, }}
+                                errors={errors.phoneNumber}
                             />
                         </Box>
                         <Button
@@ -85,40 +84,41 @@ export default function SignIn() {
                             }}>
                             Submuit
                         </Button>
+                    </Box>
+                    <Typography
+                        onClick={() => navigate('/')}
+                        variant='body2'
+                        sx={{
+                            color: '#3D30A2', textDecoration: 'underline', fontSize: 16, cursor: 'pointer', transition: '.3s', my: 3, '&:hover': {
+                                textDecoration: 'none'
+                            }
+                        }}>I don't have a mobile phone</Typography>
+
+                    <Box component={'div'}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            justifyContent: 'center'
+                        }}>
                         <Typography
                             onClick={() => navigate('/')}
                             variant='body2'
                             sx={{
-                                color: '#3D30A2', textDecoration: 'underline', fontSize: 16, cursor: 'pointer', transition: '.3s', mb: 2, '&:hover': {
+                                color: '#3D30A2', textDecoration: 'underline', fontSize: 12, cursor: 'pointer', transition: '.3s',
+                                '&:hover': {
                                     textDecoration: 'none'
                                 }
-                            }}>I don't have a mobile phone</Typography>
-
-                        <Box component={'div'}
+                            }}>Terns and conditions</Typography>
+                        <Box component={'div'} sx={{ borderRight: '1px solid gray', height: 20 }}></Box>
+                        <Typography
+                            onClick={() => navigate('/')}
+                            variant='body2'
                             sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 1
-                            }}>
-                            <Typography
-                                onClick={() => navigate('/')}
-                                variant='body2'
-                                sx={{
-                                    color: '#3D30A2', textDecoration: 'underline', fontSize: 12, cursor: 'pointer', transition: '.3s',
-                                    '&:hover': {
-                                        textDecoration: 'none'
-                                    }
-                                }}>Terns and conditions</Typography>
-                            <Box component={'div'} sx={{ borderRight: '1px solid gray', height: 20 }}></Box>
-                            <Typography
-                                onClick={() => navigate('/')}
-                                variant='body2'
-                                sx={{
-                                    color: '#3D30A2', textDecoration: 'underline', fontSize: 12, cursor: 'pointer', transition: '.3s', '&:hover': {
-                                        textDecoration: 'none'
-                                    }
-                                }}>Privacy Policy</Typography>
-                        </Box>
+                                color: '#3D30A2', textDecoration: 'underline', fontSize: 12, cursor: 'pointer', transition: '.3s', '&:hover': {
+                                    textDecoration: 'none'
+                                }
+                            }}>Privacy Policy</Typography>
                     </Box>
                 </CardContent>
             </Card>

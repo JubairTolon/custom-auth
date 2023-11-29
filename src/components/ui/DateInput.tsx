@@ -11,56 +11,52 @@ import { Controller } from 'react-hook-form';
 type DatePropsType = {
     errors: any;
     label: string;
-    fieldID: string;
+    name: string;
     control: any;
+    type: string;
+    rules: any;
 }
-export default function DateInput({ errors, fieldID, control, label }: DatePropsType) {
+export default function DateInput({ errors, control, label, name, rules }: DatePropsType) {
 
     return (
         <Box component={'div'} sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Controller
-                    name="dateOfBirth"
+                    name={name}
                     control={control}
-                    rules={{ required: 'Date of Birth is required' }}
-                    defaultValue={null}
+                    rules={rules}
                     render={({ field }) => (
                         <DatePicker
                             {...field}
                             label={label}
-                            // inputFormat="MM/dd/yyyy"
-                            slotProps={{ textField: { variant: 'outlined' } }}
+                            format="dd/MM/yyyy"
+                            slotProps={{ textField: { variant: 'outlined', error: Boolean(errors), helperText: `${errors?.message || ''}` } }}
                             sx={{
                                 '& .MuiFormLabel-root': {
                                     fontWeight: 500,
                                 },
                                 '& label.Mui-focused': {
-                                    color: '#1c2437',
+                                    color: '#3d30a2',
                                     // fontSize: size === 'small' ? 16 : 18
                                 },
                                 '& .MuiOutlinedInput-root': {
-                                    backgroundColor: '#ebebeb',
+                                    backgroundColor: '#f8f8f8',
+                                    '& fieldset': {
+                                        transition: '.3s',
+                                        borderWidth: "2px",
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'gray',
+                                    },
                                     '&.Mui-focused fieldset': {
-                                        borderColor: '#2a3064',
+                                        borderColor: '#3D30A2',
                                         borderWidth: '2px'
                                     },
                                 },
-                            }} />
+                            }}
+                        />
                     )}
                 />
-                <Box component={'label'}
-                    sx={{
-                        color: 'indianred',
-                        paddingLeft: '14px',
-                        marginTop: '2px',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'flex-start'
-                    }}>
-                    {errors[fieldID]?.type === 'required' && <Box component={'span'}>{errors[fieldID].message}</Box>}
-                </Box>
             </LocalizationProvider>
         </Box>
     )
