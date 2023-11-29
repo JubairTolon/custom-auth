@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
 import { Box, Button, Checkbox, FormControlLabel, Step, StepLabel, Stepper, Typography, Card, CardContent } from '@mui/material';
@@ -38,10 +39,7 @@ export default function SignUp() {
     }, [activeStep])
 
     const handleNext = (data: any) => {
-        console.log(data)
-        // if (data.email !== data.confirmEmail) {
-        //     return setEmailError("Email didn't match")
-        // }
+        console.log(data);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
@@ -54,25 +52,26 @@ export default function SignUp() {
             sx={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                px: 10,
-                py: 2,
-                gap: 5
+                flexDirection: { xs: 'column-reverse', md: 'row' },
+                px: { xs: 2, sm: 2, md: 4, lg: 10 },
+                py: { xs: 0, md: 2 },
+                gap: { xs: 2, lg: 5 }
             }}>
             <Card
                 sx={{
-                    width: '70%',
+                    width: { xs: '100%', md: '70%' },
                     borderRadius: 2
                 }}>
                 <CardContent>
                     <Stepper
                         sx={{
-                            width: '90%',
+                            width: { xs: '100%', md: '90%' },
                             mx: 'auto',
                             '& .MuiStepConnector-root span': {
                                 borderColor: '#00052D',
                             },
                             '& .MuiStepIcon-root': {
-                                fontSize: { xs: 14, sm: 14, md: 18, lg: 24 },
+                                fontSize: { xs: 14, sm: 20, md: 18, lg: 24 },
                             },
                             my: 5
                         }}
@@ -98,7 +97,7 @@ export default function SignUp() {
                                         sx={{
                                             '& .MuiStepLabel-labelContainer span': {
                                                 color: '#00052D',
-                                                fontSize: { xs: '10px', sm: '12px', md: '16px', lg: '16px', xl: '16px' }
+                                                fontSize: { xs: 10, sm: 14, md: 16, lg: 16, xl: 16 }
                                             },
                                             '& .MuiStepLabel-labelContainer .Mui-active': {
                                                 color: '#00052D',
@@ -113,20 +112,21 @@ export default function SignUp() {
                     </Stepper>
                     <Box component={'form'}
                         sx={{
-                            width: '90%',
+                            width: { xs: '100%', md: '90%' },
                             mx: 'auto'
                         }}
                         noValidate
                         onSubmit={handleSubmit(onSubmit)}>
                         {formPage === 'identity' &&
                             <>
-                                <Typography variant='h5' sx={{ fontSize: 16, textTransform: 'capitalize', mt: 10, mb: 1, fontWeight: 600, textAlign: 'left' }}>Identity</Typography>
-                                <Typography variant='body2' sx={{ fontSize: 14, textTransform: 'capitalize', mb: 2, textAlign: 'left' }}>Your social security number and DOB are used to confirm your identity. This info will be securely transmitted to the credit reporting agencies.</Typography>
+                                <Typography variant='h5' sx={{ fontSize: 16, textTransform: 'capitalize', mt: { xs: 4, md: 10 }, mb: 1, fontWeight: 600, textAlign: 'left' }}>Identity</Typography>
+                                <Typography variant='body2' sx={{ fontSize: { xs: 12, md: 14 }, textTransform: 'capitalize', mb: { xs: 0, md: 2 }, textAlign: 'left' }}>Your social security number and DOB are used to confirm your identity. This info will be securely transmitted to the credit reporting agencies.</Typography>
                                 <Box component={'div'}
                                     sx={{
                                         display: 'flex',
-                                        gap: 5,
-                                        mt: 5,
+                                        flexDirection: { xs: 'column', md: 'row' },
+                                        gap: { xs: 2, md: 5 },
+                                        mt: { xs: 2, md: 5 },
                                         mb: 2,
                                     }}>
                                     <NativeTextInput
@@ -145,7 +145,7 @@ export default function SignUp() {
                                         type={''} />
                                 </Box>
                                 <FormControlLabel
-                                    sx={{ width: '100%' }}
+                                    sx={{ width: '100%', display: 'flex', alignItems: { xs: 'flex-start', sm: 'center' } }}
                                     control={<Checkbox
                                         {...register('sendSMS')}
                                         sx={{
@@ -154,7 +154,8 @@ export default function SignUp() {
                                                 color: '#3D30A2',
                                             },
                                         }} />}
-                                    label="Send me identity and credit monitoring alerts via SMS, if available."
+
+                                    label={<Typography sx={{ fontSize: { xs: 14, md: 16 }, textAlign: 'start' }}>Send me identity and credit monitoring alerts via SMS, if available.</Typography>}
                                 />
                             </>
                         }
@@ -164,7 +165,10 @@ export default function SignUp() {
                                 <Box component={'div'}
                                     sx={{
                                         display: 'flex',
-                                        gap: 5,
+                                        flexDirection: { xs: 'column', md: 'row' },
+                                        gap: { xs: 2, md: 5 },
+                                        mt: { xs: 2, md: 5 },
+                                        mb: 2,
                                     }}>
                                     <NativeTextInput
                                         control={control}
@@ -183,11 +187,14 @@ export default function SignUp() {
                                         errors={errors.firstName}
                                     />
                                 </Box>
-                                <Typography variant='h5' sx={{ color: '##27282A', fontSize: 16, fontWeight: 600, textTransform: 'capitalize', mt: 2, mb: 2, textAlign: 'left' }}>Address:</Typography>
+                                <Typography variant='h5' sx={{ color: '#27282A', fontSize: 16, fontWeight: 600, textTransform: 'capitalize', mt: 2, mb: 2, textAlign: 'left' }}>Address:</Typography>
                                 <Box component={'div'}
                                     sx={{
                                         display: 'flex',
-                                        gap: 5,
+                                        flexDirection: { xs: 'column', md: 'row' },
+                                        gap: { xs: 2, md: 5 },
+                                        mt: { xs: 2, md: 5 },
+                                        mb: 2,
                                     }}>
                                     <NativeTextInput
                                         control={control}
@@ -209,8 +216,10 @@ export default function SignUp() {
                                 <Box component={'div'}
                                     sx={{
                                         display: 'flex',
-                                        gap: 5,
-                                        mt: 2
+                                        flexDirection: { xs: 'column', md: 'row' },
+                                        gap: { xs: 2, md: 5 },
+                                        mt: { xs: 2, md: 5 },
+                                        mb: 2,
                                     }}>
                                     <NativeTextInput
                                         control={control}
@@ -243,15 +252,18 @@ export default function SignUp() {
                                                 },
                                             }}
                                         />}
-                                    label="I have been at my current address for six months or more."
+                                    label={<Typography sx={{ fontSize: { xs: 14, md: 16, textAlign: 'start' } }}>I have been at my current address for six months or more.</Typography>}
                                 />
 
                                 {!currAddress &&
                                     <>
-                                        <Typography variant='h5' sx={{ color: '##27282A', fontSize: 16, fontWeight: 600, textTransform: 'capitalize', mt: 4, mb: 2, textAlign: 'left' }}>Previous Address:</Typography><Box component={'div'}
+                                        <Typography variant='h5' sx={{ color: '#27282A', fontSize: 16, fontWeight: 600, textTransform: 'capitalize', mt: 4, mb: 2, textAlign: 'left' }}>Previous Address:</Typography><Box component={'div'}
                                             sx={{
                                                 display: 'flex',
-                                                gap: 5,
+                                                flexDirection: { xs: 'column', md: 'row' },
+                                                gap: { xs: 2, md: 5 },
+                                                mt: { xs: 2, md: 5 },
+                                                mb: 2,
                                             }}>
                                             <NativeTextInput
                                                 control={control}
@@ -270,8 +282,10 @@ export default function SignUp() {
                                         </Box><Box component={'div'}
                                             sx={{
                                                 display: 'flex',
-                                                gap: 5,
-                                                mt: 2
+                                                flexDirection: { xs: 'column', md: 'row' },
+                                                gap: { xs: 2, md: 5 },
+                                                mt: { xs: 2, md: 5 },
+                                                mb: 2,
                                             }}>
                                             <NativeTextInput
                                                 control={control}
@@ -305,7 +319,7 @@ export default function SignUp() {
                                                     },
                                                 }}
                                             />}
-                                            label="By checking this accept the terms and conditions."
+                                            label={<Typography sx={{ fontSize: { xs: 14, md: 16, textAlign: 'start' } }}>By checking this accept the terms and conditions.</Typography>}
                                         />
                                     )}
                                 />
@@ -338,7 +352,7 @@ export default function SignUp() {
                                 onClick={handleBack}
                                 variant='contained'
                                 sx={{
-                                    bgcolor: '#1c2437',
+                                    bgcolor: `${activeStep > 0 ? '#1c2437' : 'gray'}`,
                                     color: 'whiteSmoke',
                                     whiteSpace: 'nowrap',
                                     textTransform: 'capitalize',

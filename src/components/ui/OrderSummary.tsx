@@ -9,23 +9,23 @@ type OrderSummaryProps = {
 
 
 export default function OrderSummary({ activeState }: OrderSummaryProps) {
-    console.log(activeState)
+
     return (
         <>
             <Card
                 sx={{
-                    width: '30%',
+                    width: { xs: '100%', md: '30%' },
                     borderRadius: 2
                 }}>
                 <CardContent>
-                    <Typography variant='h1' sx={{ fontSize: 24, fontWeight: 600, color: '#272829', textAlign: 'start' }}>Order Summary</Typography>
+                    <Typography variant='h1' sx={{ fontSize: { xs: 18, md: 24 }, fontWeight: 600, color: '#272829', textAlign: 'start' }}>Order Summary</Typography>
                     <Box component={'div'}
                         sx={{
                             display: 'flex',
                             alignItems: 'flex-start',
                             mt: 2,
-                            mb: 4,
-                            gap: 4
+                            mb: { xs: 2, md: 4 },
+                            gap: { xs: 2, md: 4 }
                         }}>
 
                         <Box component={'div'}
@@ -33,7 +33,7 @@ export default function OrderSummary({ activeState }: OrderSummaryProps) {
                                 width: '60%',
                                 textAlign: 'start',
                             }}>
-                            <Typography variant='h5' sx={{ display: 'flex', fontSize: 16, fontWeight: 500, color: '#3D30A2', textAlign: 'start', alignItems: 'center', gap: 1, mb: 4 }}>Credit Essentials
+                            <Typography variant='h5' sx={{ display: 'flex', fontSize: { xs: 14, md: 16 }, fontWeight: 500, color: '#3D30A2', textAlign: 'start', alignItems: 'center', gap: 1, mb: { xs: 1, md: 4 } }}>Credit Essentials
                                 <Chip size='small' sx={{ borderRadius: 1, backgroundColor: '#C7C3E3', color: '#272829', fontSize: 12 }} label="trial" variant="filled" />
                             </Typography>
                             {(activeState === 'identity' || activeState === 'personalInfo') &&
@@ -114,7 +114,7 @@ export default function OrderSummary({ activeState }: OrderSummaryProps) {
                         </>
                     }
                     <Divider />
-                    <Box component={'div'} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 4 }}>
+                    <Box component={'div'} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: { xs: 2, md: 4 } }}>
                         <Typography variant='h5' sx={{ fontSize: 18, fontWeight: 600, }}>
                             Total
                         </Typography>
