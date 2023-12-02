@@ -23,7 +23,6 @@ export default function NativeTextInput({ errors, control, name, label, type, ru
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        required
                         sx={{
                             '& .MuiFormLabel-root': {
                                 fontWeight: 500,

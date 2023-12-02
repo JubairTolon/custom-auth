@@ -6,17 +6,21 @@ import { useNavigate } from "react-router-dom";
 import PhoneInput from '../ui/PhoneInput';
 
 
+
 type SignInInputTypes = {
     phoneNumber: string;
 }
 export default function SignIn() {
     const navigate = useNavigate();
-
     const {
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm<SignInInputTypes>();
+    } = useForm<SignInInputTypes>({
+        defaultValues: {
+            phoneNumber: '(+1)'
+        }
+    });
 
     //for only number input
     const formatPhoneNumber = (value: string) => {
@@ -28,9 +32,10 @@ export default function SignIn() {
     };
 
     //for handle submit signin data
-    const onSubmit: SubmitHandler<SignInInputTypes> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<SignInInputTypes> = (data, event) => {
+        event?.preventDefault();
         if (data.phoneNumber) {
+            console.log(data)
             navigate('/signup')
         }
     };
@@ -73,8 +78,7 @@ export default function SignIn() {
                                 control={control}
                                 name='phoneNumber'
                                 label='Phone Number'
-                                type='text'
-                                rules={{ required: 'This field is required', minLength: { value: 10, message: 'Minimum length is 10 characters' }, }}
+                                rules={{ required: 'This field is required', minLength: { value: 10, message: 'Minimum length must be 10 degits' }, }}
                                 errors={errors.phoneNumber}
                                 formatPhoneNumber={formatPhoneNumber}
                             />

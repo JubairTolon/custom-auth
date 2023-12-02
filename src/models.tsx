@@ -15,7 +15,7 @@ export type SignUpInputTypes = {
     city: string;
     state: string;
     zip: string;
-    termsForcurAddress: boolean;
+    termscurrAddress: boolean;
     prevAddress: string;
     prevCity: string;
     prevState: string;
