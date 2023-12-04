@@ -1,24 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, IconButton, TextField } from '@mui/material'
-import React, { Dispatch } from 'react'
-import { BiHide, BiShowAlt } from 'react-icons/bi'
-import { Controller } from 'react-hook-form'
+import { TextField } from '@mui/material';
+import { Controller } from 'react-hook-form';
 
-type SSNrops = {
-    setPassShow: Dispatch<React.SetStateAction<boolean>>;
-    passShow: boolean;
+
+type TextPropsType = {
     errors: any;
     label: string;
     name: string;
     control: any;
+    type: string;
     rules: any;
+    place: string;
+    setPlace: React.Dispatch<React.SetStateAction<string>>
     dispatch: any;
-    state: any;
 }
 
-export default function SSNInput({ passShow, setPassShow, errors, control, name, label, rules, dispatch, state }: SSNrops) {
+
+export default function PlaceInput({ errors, control, name, label, type, rules, place, setPlace, dispatch }: TextPropsType) {
+
     return (
-        <Box component={'div'} sx={{ width: '100%', position: 'relative' }}>
+        <>
             <Controller
                 name={name}
                 control={control}
@@ -26,19 +27,19 @@ export default function SSNInput({ passShow, setPassShow, errors, control, name,
                 render={({ field }) => (
                     <TextField
                         {...field}
+                        // value={place}
                         onChange={(e) => {
-                            // Allow only numeric characters
-                            e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                            field.onChange(e);
+                            field.onChange(e.target.value);
+                            setPlace(e.target.value);
                             dispatch({ type: name, payload: e.target.value })
                         }}
-                        placeholder='Enter your 9 degit SSN number'
                         sx={{
                             '& .MuiFormLabel-root': {
                                 fontWeight: 500,
                             },
                             '& label.Mui-focused': {
                                 color: '#3d30a2',
+                                // fontSize: size === 'small' ? 16 : 18
                             },
                             '& .MuiOutlinedInput-root': {
                                 backgroundColor: '#f8f8f8',
@@ -55,9 +56,9 @@ export default function SSNInput({ passShow, setPassShow, errors, control, name,
                                 },
                             },
                         }}
-                        // value={state?.SSN}
+
                         label={label}
-                        type={!passShow ? 'password' : 'text'}
+                        type={type}
                         variant="outlined"
                         fullWidth
                         error={!!errors}
@@ -65,16 +66,6 @@ export default function SSNInput({ passShow, setPassShow, errors, control, name,
                     />
                 )}
             />
-            <IconButton
-                onClick={() => setPassShow(!passShow)}
-                aria-label="delete"
-                sx={{
-                    position: 'absolute',
-                    right: 3,
-                    top: 10
-                }}>
-                {passShow ? <BiShowAlt size={20} /> : <BiHide size={20} />}
-            </IconButton>
-        </Box>
+        </>
     )
 }

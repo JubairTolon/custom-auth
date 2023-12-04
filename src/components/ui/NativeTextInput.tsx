@@ -10,10 +10,11 @@ type TextPropsType = {
     control: any;
     type: string;
     rules: any;
+    dispatch: any;
 }
 
 
-export default function NativeTextInput({ errors, control, name, label, type, rules }: TextPropsType) {
+export default function NativeTextInput({ errors, control, name, label, type, rules, dispatch }: TextPropsType) {
     return (
         <>
             <Controller
@@ -23,6 +24,7 @@ export default function NativeTextInput({ errors, control, name, label, type, ru
                 render={({ field }) => (
                     <TextField
                         {...field}
+                        onChange={(e) => dispatch({ type: name, payload: e.target.value })}
                         sx={{
                             '& .MuiFormLabel-root': {
                                 fontWeight: 500,

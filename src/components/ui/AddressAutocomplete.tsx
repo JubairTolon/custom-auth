@@ -10,9 +10,11 @@ type AddressPropsType = {
     errors: any;
     formData: any;
     control: any;
+    setFormattedPlaces: any;
+    setSelectedPlace: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function AddressAutocomplete({ name, label, rules, errors, formData, control }: AddressPropsType) {
+export default function AddressAutocomplete({ name, label, rules, errors, formData, control, setFormattedPlaces, setSelectedPlace }: AddressPropsType) {
     const [suggestions, setSuggestions] = useState([]);
 
 
@@ -23,8 +25,16 @@ export default function AddressAutocomplete({ name, label, rules, errors, formDa
                 fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&format=json&apiKey=${import.meta.env.VITE_GEOAPIFY_TOKEN}`)
                     .then(response => response.json())
                     .then(result => {
-                        const newSuggestions = result?.results.map((suggestion: { formatted: any; }) => suggestion.formatted);
-                        setSuggestions(newSuggestions);
+                        const filteredSuggessions = result?.results.map((address: any) => ({
+                            formatted: address.formatted,
+                            address: address.address_line2,
+                            city: address.city,
+                            country: address.country,
+                            postcode: address.postcode || '',
+                        }));
+                        setFormattedPlaces(filteredSuggessions);
+                        const newOptions = filteredSuggessions?.map((suggestion: { formatted: any; }) => suggestion.formatted);
+                        setSuggestions(newOptions);
                     })
                     .catch(error => console.log('error', error));
         }
@@ -40,8 +50,12 @@ export default function AddressAutocomplete({ name, label, rules, errors, formDa
                     <Autocomplete
                         disablePortal
                         options={suggestions}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
                         value={field.value || ''}
-                        onChange={(_, value) => field.onChange(value)}
+                        onChange={(_, value) => {
+                            field.onChange(value),
+                                setSelectedPlace(value)
+                        }}
                         renderInput={(params) => (
                             <TextField
                                 sx={{

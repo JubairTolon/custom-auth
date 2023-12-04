@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import { Box, Button, Checkbox, FormControlLabel, Step, StepLabel, Stepper, Typography, Card, CardContent } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { SignUpInputTypes } from '../../models';
@@ -7,7 +7,8 @@ import NativeTextInput from '../ui/NativeTextInput'; import OrderSummary from '.
 import DateInput from '../ui/DateInput';
 import SSNInput from '../ui/SSNInput';
 import AddressAutocomplete from '../ui/AddressAutocomplete';
-
+import PlaceInput from '../ui/PlaceInput';
+import { initValue, reducer } from './Reducer';
 
 const steps = ['Identity', 'Personal Info', 'Billing'];
 
@@ -18,36 +19,61 @@ export default function SignUp() {
     const [currAddress, setCurrAddress] = useState<boolean>(false);
     const [termsAndCon, setTermsAndCon] = useState<boolean>(false);
     const [passShow, setPassShow] = useState<boolean>(false);
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState({});
+    const [formattedPlaces, setFormattedPlaces] = useState([]);
+    const [selectedPlace, setSelectedPlace] = useState('');
+    const [city, setCity] = useState<string>('');
+    const [country, setCountry] = useState<string>('');
+    const [zipcode, setZipcode] = useState<string>('');
+    const [state, dispatch] = useReducer(reducer, initValue);
 
+
+    // const defaultForm = {
+    //     SSN: '',
+    //     dateofBirth: '',
+    //     sendSMS: false,
+    //     firstName: '',
+    //     lastName: '',
+    //     address: '',
+    //     city,
+    //     state,
+    //     zip: zipcode,
+    //     termscurrAddress: false,
+    //     prevAddress: '',
+    //     prevCity: '',
+    //     prevState: '',
+    //     prevZip: '',
+    //     termsAndConditions: false,
+    // }
     const {
         control,
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<SignUpInputTypes>({
-        defaultValues: {
-            SSN: '',
-            dateofBirth: '',
-            sendSMS: false,
-            firstName: '',
-            lastName: '',
-            address: '',
-            city: '',
-            state: '',
-            zip: '',
-            termscurrAddress: false,
-            prevAddress: '',
-            prevCity: '',
-            prevState: '',
-            prevZip: '',
-            termsAndConditions: false,
-        }
+        defaultValues: useMemo(
+            () => ({
+                city,
+                state,
+                zip: zipcode,
+            }),
+            [city, state, zipcode]
+        )
     });
+    useEffect(() => {
+        reset({ city, state, zip: zipcode })
+    }, [city, reset, state, zipcode])
 
-    const onSubmit: SubmitHandler<SignUpInputTypes> = (data: any) => {
+
+    const onSubmit: SubmitHandler<SignUpInputTypes> = (data: SignUpInputTypes) => {
         console.log(data);
     };
+
+    console.log('selectedPlace:::::::::::', selectedPlace);
+    console.log('city:::::::::::', city);
+    console.log('state:::::::::::', state);
+    console.log('zipcode:::::::::::', zipcode);
 
     useEffect(() => {
         if (activeStep === 0) {
@@ -61,31 +87,45 @@ export default function SignUp() {
         }
     }, [activeStep])
 
+
+    useEffect(() => {
+        formattedPlaces?.forEach((address: any) => {
+            if (selectedPlace) {
+                if (address.formatted === selectedPlace) {
+                    setCity(address.city);
+                    setCountry(address.country);
+                    setZipcode(address.postcode);
+                }
+            }
+        });
+    }, [formattedPlaces, selectedPlace])
+    console.log('------->>>', state)
     const handleNext = (data: any) => {
-        setFormData({
-            SSN: data.SSN,
-            dateofBirth: data.dateofBirth,
-            sendSMS: data.sendSMS,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            address: data.address,
-            city: data.city,
-            state: data.state,
-            zip: data.zip,
-            termscurrAddress: data.termsForcurAddress,
-            prevAddress: data.prevAddress,
-            prevCity: data.prevCity,
-            prevState: data.prevState,
-            prevZip: data.prevZip,
-            termsAndConditions: data.myCheckbox,
-        })
+        // setFormData({
+        //     SSN: data.SSN,
+        //     dateofBirth: data.dateofBirth,
+        //     sendSMS: data.sendSMS,
+        //     firstName: data.firstName,
+        //     lastName: data.lastName,
+        //     address: data.address,
+        //     city: city,
+        //     state: state,
+        //     zip: zipcode,
+        //     termscurrAddress: data.termsForcurAddress,
+        //     prevAddress: data.prevAddress,
+        //     prevCity: data.prevCity,
+        //     prevState: data.prevState,
+        //     prevZip: data.prevZip,
+        //     termsAndConditions: data.myCheckbox,
+        // })
+        console.log('data|||||||||||||||||||', data)
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        console.log(data)
     };
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
     return (
         <Box component={'div'}
             sx={{
@@ -175,8 +215,16 @@ export default function SignUp() {
                                         control={control}
                                         name='SSN'
                                         label='SSN code'
-                                        rules={{ required: 'This field is required', minLength: { value: 9, message: 'Minimum length is 9 characters' }, }}
+                                        rules={{
+                                            required: 'This field is required',
+                                            pattern: {
+                                                value: /^\d{9}$/,
+                                                message: 'SSN number must be 9 degits'
+                                            },
+                                        }}
                                         errors={errors.SSN}
+                                        dispatch={dispatch}
+                                        state={state}
                                     />
                                     <DateInput
                                         control={control}
@@ -184,14 +232,16 @@ export default function SignUp() {
                                         label='Date of Birth'
                                         rules={{ required: 'This field is required' }}
                                         errors={errors.dateofBirth}
-                                        type={''} />
+                                        type={''}
+                                        dispatch={dispatch}
+                                    />
                                 </Box>
                                 <FormControlLabel
                                     sx={{ width: '100%', display: 'flex', alignItems: { xs: 'flex-start', sm: 'center' } }}
                                     control={<Checkbox
                                         checked={sendSMS}
                                         {...register('sendSMS')}
-                                        onChange={(e) => setSendSMS(e.target.checked)}
+                                        onChange={(e) => dispatch({ type: 'sendSMS', payload: e.target.checked })}
                                         sx={{
                                             color: 'gray',
                                             '&.Mui-checked': {
@@ -221,6 +271,8 @@ export default function SignUp() {
                                         type='text'
                                         rules={{ required: 'This field is required', }}
                                         errors={errors.lastName}
+                                        // state={state}
+                                        dispatch={dispatch}
                                     />
                                     <NativeTextInput
                                         control={control}
@@ -229,6 +281,8 @@ export default function SignUp() {
                                         type='text'
                                         rules={{ required: 'This field is required', }}
                                         errors={errors.firstName}
+                                        // state={state}
+                                        dispatch={dispatch}
                                     />
                                 </Box>
                                 <Typography variant='h5' sx={{ color: '#27282A', fontSize: 16, fontWeight: 600, textTransform: 'capitalize', mt: 2, mb: 2, textAlign: 'left' }}>Address:</Typography>
@@ -247,14 +301,19 @@ export default function SignUp() {
                                         label='Address'
                                         rules={{ required: 'This field is required', }}
                                         errors={errors.address}
+                                        setFormattedPlaces={setFormattedPlaces}
+                                        setSelectedPlace={setSelectedPlace}
                                     />
-                                    <AddressAutocomplete
-                                        formData={formData}
+                                    <PlaceInput
                                         control={control}
                                         name='city'
                                         label='City'
+                                        type='text'
                                         rules={{ required: 'This field is required', }}
                                         errors={errors.city}
+                                        place={city}
+                                        setPlace={setCity}
+                                        dispatch={dispatch}
                                     />
                                 </Box>
                                 <Box component={'div'}
@@ -265,21 +324,27 @@ export default function SignUp() {
                                         mt: { xs: 2, md: 5 },
                                         mb: 2,
                                     }}>
-                                    <AddressAutocomplete
-                                        formData={formData}
+                                    <PlaceInput
                                         control={control}
                                         name='state'
                                         label='State/region'
+                                        type='text'
                                         rules={{ required: 'This field is required', }}
                                         errors={errors.state}
+                                        place={state}
+                                        setPlace={setCountry}
+                                        dispatch={dispatch}
                                     />
-                                    <NativeTextInput
+                                    <PlaceInput
                                         control={control}
                                         name='zip'
-                                        label='Zip Code'
+                                        label='Zip code'
                                         type='text'
-                                        rules={{ required: 'This field is required', pattern: { value: /^-?[0-9]*$/, message: 'Characters must be number 0-9' } }}
+                                        rules={{ required: 'This field is required', }}
                                         errors={errors.zip}
+                                        place={zipcode}
+                                        setPlace={setZipcode}
+                                        dispatch={dispatch}
                                     />
                                 </Box>
                                 <FormControlLabel
@@ -309,7 +374,7 @@ export default function SignUp() {
                                                 mt: 2,
                                                 mb: 2,
                                             }}>
-                                            <AddressAutocomplete
+                                            {/* <AddressAutocomplete
                                                 formData={formData}
                                                 control={control}
                                                 name='prevAddress'
@@ -324,7 +389,7 @@ export default function SignUp() {
                                                 label='City'
                                                 rules={{ required: 'This field is required', }}
                                                 errors={errors.address}
-                                            />
+                                            /> */}
                                         </Box>
                                         <Box component={'div'}
                                             sx={{
@@ -334,21 +399,21 @@ export default function SignUp() {
                                                 mt: { xs: 2, md: 5 },
                                                 mb: 2,
                                             }}>
-                                            <AddressAutocomplete
+                                            {/* <AddressAutocomplete
                                                 formData={formData}
                                                 control={control}
                                                 name='prevState'
                                                 label='State/region'
                                                 rules={{ required: 'This field is required', }}
                                                 errors={errors.address}
-                                            />
-                                            <NativeTextInput
+                                            /> */}
+                                            {/* <NativeTextInput
                                                 control={control}
                                                 name='prevZip'
                                                 label='Zip Code'
                                                 type='text'
                                                 rules={{ required: 'This field is required', pattern: { value: /^-?[0-9]*$/, message: 'Characters must be number 0-9' } }}
-                                                errors={errors.prevZip} />
+                                                errors={errors.prevZip} /> */}
                                         </Box>
                                     </>}
 

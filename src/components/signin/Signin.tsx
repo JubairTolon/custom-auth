@@ -78,7 +78,13 @@ export default function SignIn() {
                                 control={control}
                                 name='phoneNumber'
                                 label='Phone Number'
-                                rules={{ required: 'This field is required', minLength: { value: 10, message: 'Minimum length must be 10 degits' }, }}
+                                rules={{
+                                    required: 'This field is required',
+                                    pattern: {
+                                        value: /^\d{3}-\d{3}-\d{4}$/
+                                        , message: 'Phone number must be 10 degits'
+                                    },
+                                }}
                                 errors={errors.phoneNumber}
                                 formatPhoneNumber={formatPhoneNumber}
                             />

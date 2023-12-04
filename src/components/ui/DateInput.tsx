@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Box } from '@mui/material';
 import { Controller } from 'react-hook-form';
+import { format } from 'date-fns';
 
 
 
@@ -15,8 +16,10 @@ type DatePropsType = {
     control: any;
     type: string;
     rules: any;
+    dispatch: any;
+
 }
-export default function DateInput({ errors, control, label, name, rules }: DatePropsType) {
+export default function DateInput({ errors, control, label, name, rules, dispatch }: DatePropsType) {
 
     return (
         <Box component={'div'} sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -28,8 +31,11 @@ export default function DateInput({ errors, control, label, name, rules }: DateP
                     render={({ field }) => (
                         <DatePicker
                             {...field}
+                            onChange={(value) => {
+                                dispatch({ type: name, payload: format(value, 'dd-MM-yyyy') })
+                            }}
                             label={label}
-                            format="dd/MM/yyyy"
+                            // format="dd/MM/yyyy"
                             slotProps={{ textField: { variant: 'outlined', error: Boolean(errors), helperText: `${errors?.message || ''}` } }}
                             sx={{
                                 '& .MuiFormLabel-root': {
