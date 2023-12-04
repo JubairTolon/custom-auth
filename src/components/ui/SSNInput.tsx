@@ -12,11 +12,10 @@ type SSNrops = {
     name: string;
     control: any;
     rules: any;
-    dispatch: any;
-    state: any;
+    formData: any;
 }
 
-export default function SSNInput({ passShow, setPassShow, errors, control, name, label, rules, dispatch, state }: SSNrops) {
+export default function SSNInput({ passShow, setPassShow, errors, control, name, label, rules, formData }: SSNrops) {
     return (
         <Box component={'div'} sx={{ width: '100%', position: 'relative' }}>
             <Controller
@@ -30,7 +29,7 @@ export default function SSNInput({ passShow, setPassShow, errors, control, name,
                             // Allow only numeric characters
                             e.target.value = e.target.value.replace(/[^0-9]/g, '');
                             field.onChange(e);
-                            dispatch({ type: name, payload: e.target.value })
+                            formData.SSN = e.target.value;
                         }}
                         placeholder='Enter your 9 degit SSN number'
                         sx={{
@@ -55,7 +54,6 @@ export default function SSNInput({ passShow, setPassShow, errors, control, name,
                                 },
                             },
                         }}
-                        // value={state?.SSN}
                         label={label}
                         type={!passShow ? 'password' : 'text'}
                         variant="outlined"

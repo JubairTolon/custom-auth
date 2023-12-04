@@ -8,13 +8,13 @@ type AddressPropsType = {
     label: string;
     rules: any;
     errors: any;
-    formData: any;
     control: any;
     setFormattedPlaces: any;
     setSelectedPlace: React.Dispatch<React.SetStateAction<string>>;
+    formData: any;
 }
 
-export default function AddressAutocomplete({ name, label, rules, errors, formData, control, setFormattedPlaces, setSelectedPlace }: AddressPropsType) {
+export default function AddressAutocomplete({ name, label, rules, errors, control, setFormattedPlaces, setSelectedPlace, formData }: AddressPropsType) {
     const [suggestions, setSuggestions] = useState([]);
 
 
@@ -55,6 +55,7 @@ export default function AddressAutocomplete({ name, label, rules, errors, formDa
                         onChange={(_, value) => {
                             field.onChange(value),
                                 setSelectedPlace(value)
+                            formData.address = value
                         }}
                         renderInput={(params) => (
                             <TextField
@@ -82,7 +83,7 @@ export default function AddressAutocomplete({ name, label, rules, errors, formDa
                                 }}
                                 {...params}
                                 {...field}
-                                value={formData?.[name] || ''}
+                                // value={formData?.[name] || ''}
                                 onChange={handleInputChange}
                                 label={label}
                                 variant="outlined"
